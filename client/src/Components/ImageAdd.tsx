@@ -24,20 +24,23 @@ export const ImageAdd = () => {
         formData.append('file', file);
 
         try {
-            const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-                maxContentLength: Infinity,
+            const backend = import.meta.env.VITE_BACKEND_URL;
+            console.log(backend);
+            const response = await axios.post(`${backend}/upload`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'pinata_api_key': PINATA_API_KEY,
-                    'pinata_secret_api_key': PINATA_SECRET_API_KEY,
-                },
+                    "Content-Type": 'multipart/form-data'
+                }
             });
 
-            console.log("IPFS Hash:", res.data.IpfsHash);
-            alert(`Uploaded successfully! IPFS CID: ${res.data.IpfsHash}`);
-        } catch (err) {
-            console.error("Error uploading:", err);
-            alert("Upload failed. See console for error.");
+            const cid = await response.data.cid;
+            console.log(cid);
+            alert(cid);
+
+        } catch (error) {
+            console.error("Error: ", error);
+            alert(error);
+        } finally {
+
         }
     };
 
