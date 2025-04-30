@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@metamask/providers": "^22.1.0",
     "@tailwindcss/vite": "^4.1.4",
+    "@truffle/contract": "^4.6.31",
     "@types/node": "^22.15.3",
     "axios": "^1.9.0",
+    "ethers": "^6.13.7",
     "ipfs-http-client": "^60.0.1",
     "nft.storage": "^7.2.0",
     "react": "^19.0.0",

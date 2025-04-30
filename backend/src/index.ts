@@ -71,17 +71,10 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     console.error('Upload Error:', error);
     res.status(500).json({
       error: 'Failed to upload to IPFS',
-      details: error
     });
   }
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy' });
-});
-
-// Start server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
