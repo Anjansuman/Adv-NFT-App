@@ -1,8 +1,6 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 
-const PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY;
-const PINATA_SECRET_API_KEY = import.meta.env.VITE_PINATA_SECRET_KEY;
 
 export const ImageAdd = () => {
     const [file, setFile] = useState<File | null>(null);
@@ -65,29 +63,9 @@ export const ImageAdd = () => {
     };
 
     return (
-        <div className="space-y-4 p-4 max-w-md mx-auto">
+        <div className="space-y-4 max-w-md mx-auto">
             {/* File input with preview */}
             <div className="flex flex-col items-center gap-4">
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="hidden"
-                    id="image-upload"
-                    disabled={isUploading}
-                />
-                
-                <label 
-                    htmlFor="image-upload"
-                    className={`w-full py-2 px-4 rounded-lg text-center cursor-pointer transition-colors ${
-                        isUploading 
-                            ? "bg-gray-300 cursor-not-allowed" 
-                            : "bg-blue-500 hover:bg-blue-600 text-white"
-                    }`}
-                >
-                    {isUploading ? "Uploading..." : "Choose Image"}
-                </label>
                 
                 {previewUrl && (
                     <div className="relative w-full">
@@ -101,7 +79,7 @@ export const ImageAdd = () => {
                         {!isUploading && (
                             <button
                                 onClick={handleRemoveImage}
-                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors cursor-pointer"
                                 aria-label="Remove image"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -111,16 +89,36 @@ export const ImageAdd = () => {
                         )}
                     </div>
                 )}
+                {/* File info */}
+                {file && (
+                    <div className="text-sm w-full text-gray-600 p-2 bg-gray-50 rounded">
+                        <p><span className="font-medium">Name:</span> {file.name}</p>
+                        <p><span className="font-medium">Size:</span> {(file.size / 1024).toFixed(2)} KB</p>
+                        <p><span className="font-medium">Type:</span> {file.type}</p>
+                    </div>
+                )}
+
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="image-upload"
+                    disabled={isUploading}
+                />
+                
+                <label 
+                    htmlFor="image-upload"
+                    className={`w-[410px] py-2 px-4 rounded-lg text-center cursor-pointer transition-colors ${
+                        isUploading 
+                            ? "bg-gray-300 cursor-not-allowed" 
+                            : "bg-blue-500 hover:bg-blue-600 text-white"
+                    }`}
+                >
+                    {isUploading ? "Uploading..." : "Choose Image"}
+                </label>
             </div>
-            
-            {/* File info */}
-            {file && (
-                <div className="text-sm text-gray-600 p-2 bg-gray-50 rounded">
-                    <p><span className="font-medium">Name:</span> {file.name}</p>
-                    <p><span className="font-medium">Size:</span> {(file.size / 1024).toFixed(2)} KB</p>
-                    <p><span className="font-medium">Type:</span> {file.type}</p>
-                </div>
-            )}
             
             {/* Submit button */}
             <button

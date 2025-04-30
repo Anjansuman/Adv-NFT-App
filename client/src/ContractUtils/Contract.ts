@@ -76,9 +76,7 @@ export class Contract {
 
         try {
             
-            const txn = await this.contract.purchaseTicket(name, { value: ethers.parseEther(eth) });
-            const receipt = await txn.wait();
-            return receipt;
+            return await this.contract.purchaseTicket(name, { value: ethers.parseEther(eth) });
 
         } catch (error) {
             this.throwError(error);
@@ -111,6 +109,12 @@ export class Contract {
         } catch (error) {
             this.throwError(error);
         }
+    }
+
+    public connectedWallet() {
+        if(!this.contract || !this.signer) throw new Error("MetaMask not connected!");
+
+        return this.signer.address;
     }
 
     private throwError(error: unknown) {
