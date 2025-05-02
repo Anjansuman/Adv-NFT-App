@@ -15,8 +15,12 @@ export class Contract {
     constructor(contractAddress: string, contractABI: ethers.InterfaceAbi) {
         this.contractAddress = contractAddress;
         this.contractABI = contractABI;
+    }
 
-        this.initialize();
+    public static async create(contractAddress: string, contractABI: ethers.InterfaceAbi): Promise<Contract> {
+        const instance = new Contract(contractAddress, contractABI);
+        await instance.initialize(); // Await async init
+        return instance;
     }
 
     private async initialize() {
@@ -56,7 +60,10 @@ export class Contract {
     }
 
     public async createTicket(name: String, price: number, totalSupply: number, imageURI: String) {
-        if(!this.contract) throw new Error("MetaMask not connected!");
+        if(!this.contract) {
+            alert(this.contract);
+            throw new Error("MetaMask not connected! from create");
+        }
 
         try {
             
@@ -111,8 +118,12 @@ export class Contract {
         }
     }
 
+    public async isConnected() {
+        return this.contract !== null;
+    }
+
     public connectedWallet() {
-        if(!this.contract || !this.signer) throw new Error("MetaMask not connected!");
+        if(!this.contract || !this.signer) throw new Error("MetaMask not connected!, from connecteWallet");
 
         return this.signer.address;
     }
