@@ -78,6 +78,18 @@ export class Contract {
         }
     }
 
+    public async getAllTickets() {
+        if(!this.contract) throw new Error("Metamask not connected!");
+        try {
+            
+            const tickets = await this.contract.getAllTickets();
+            return tickets;
+
+        } catch (error) {
+            this.throwError(error);
+        }
+    }
+
     public async purchaseTicket(name: String, eth: string) {
         if(!this.contract) throw new Error("MetaMask not connected!");
 

@@ -28,6 +28,10 @@ contract DataNFTToken is ERC721Enumerable, Ownable {
         Tickets.push(newTicket);
     }
 
+    function getAllTickets() public view returns(Ticket[] memory) {
+        return Tickets;
+    }
+
     function purchaseTicket(string memory _name) public payable {
         // do entry level checks in frontend
         uint256 index = Tickets.length;

@@ -4,9 +4,14 @@ import { useRecoilValue } from "recoil";
 import FileAtom from "../Atoms/FileAtom";
 import axios from "axios";
 import { ContractAtom } from "../Atoms/ContractAtom";
+import { CrossIcon } from "./ui/SVGs/CrossIcon";
 
 
-export const MintPage = () => {
+interface MintPageProps {
+    disappearPanel: () => void
+}
+
+export const MintPage = ({ disappearPanel }: MintPageProps) => {
 
     const name = useRef<HTMLInputElement>(null);
     const price = useRef<HTMLInputElement>(null);
@@ -65,14 +70,21 @@ export const MintPage = () => {
                 alert("Token creation failed!");
             }
 
+            alert("tickets created");
+
         } catch (error) {
             alert(error)
         }
     }
 
-    return <div className="h-full w-full p-4">
-        <div className="text-4xl font-bold mb-14">
-            Create a New Ticket
+    return <div className="h-[80%] w-[80%] border border-white bg-gray-800 rounded-3xl absolute left-1/2 top-1/2 -translate-1/2 p-4">
+        <div className="text-4xl font-bold mb-14 flex justify-between items-center px-1 ">
+            <div>
+                Create a New Ticket
+            </div>
+            <div>
+                <CrossIcon size={34} onClick={disappearPanel} />
+            </div>
         </div>
         <div className="flex justify-center gap-10">
             <div className="flex items-end ">

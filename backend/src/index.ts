@@ -1,7 +1,4 @@
 import express from 'express';
-import multer from 'multer';
-import axios from 'axios';
-import FormData from 'form-data';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 

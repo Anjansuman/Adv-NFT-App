@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MintPage } from "./Components/MintPage";
 import { Nav } from "./Components/Nav";
 
 import { useContract } from "./hooks/useContract";
 import { useRecoilValue } from "recoil";
 import { ContractAtom } from "./Atoms/ContractAtom";
-import { Contract } from "ethers";
-import { Ticket } from "./Components/ui/Ticket";
+
+import { TicketsPage } from "./Components/TicketsPage";
 
 export default function App() {
   
   const [ownerPanel, setOwnerPanel] = useState<boolean>(false);
+
+  const [createPanel, setCreatePanel] = useState<boolean>(false);
+  const [ticketsPanel, setTicketsPanel] = useState<boolean>(false);
+
   const contract = useRecoilValue(ContractAtom);
   useContract();
-
-  const getTickets = async () => {
-    const tickets = await contract.
-  }
 
   const connected = () => {
 
@@ -25,15 +25,25 @@ export default function App() {
     return contract.connectedWallet() == import.meta.env.VITE_CONTRACT_OWNER;
   }
 
+  const withdraw = async () => {
+    if(!contract) return;
+
+    const receipt = await contract.withdraw();
+  }
+
   return (
       <div className="h-screen w-screen text-white ">
         <div>
         <Nav />
         {ownerPanel && <div className="px-4 py-2 bg-gray-900 flex justify-start items-center gap-4">
-            <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer ">
+            <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
+              onClick={() => setCreatePanel(true)}
+            >
               Create New Ticket
             </div>
-            <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer ">
+            <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
+              onClick={withdraw}
+            >
               Withdraw
             </div>
           </div>}
@@ -44,10 +54,17 @@ export default function App() {
             Owner controls
           </div>
         </div>}
+        <div className="px-4 py-2 bg-gray-900 flex justify-start items-center gap-4">
+          <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
+            onClick={() => setTicketsPanel(true)}
+          >
+            Purchase Tickets
+          </div>
+        </div>
       </div>
-      <Ticket />
 
-      {/* <MintPage /> */}
+      {createPanel && <MintPage disappearPanel={() => setCreatePanel(false)} />}
+      {ticketsPanel && <TicketsPage disappearPanel={() => setTicketsPanel(false)} />}
     </div>
   )
 }
