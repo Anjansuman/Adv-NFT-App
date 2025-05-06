@@ -10,7 +10,7 @@ interface TicketsPageProps {
 
 export const TicketsPage = ({ disappearPanel }: TicketsPageProps) => {
 
-    const [allTickets, setAllTickets] = useState<{ name: string, price: number, totalSupply: number, sold: number, imgHash: string }[] | null>(null);
+    const [allTickets, setAllTickets] = useState<{ name: string, price: number, totalSupply: number, sold: number, imageURI: string }[] | null>(null);
     const contract = useRecoilValue(ContractAtom);
       
 
@@ -21,7 +21,6 @@ export const TicketsPage = ({ disappearPanel }: TicketsPageProps) => {
             const tickets = await contract.getAllTickets();
             console.log(tickets);
             setAllTickets(tickets);
-            console.log(tickets);
         } catch (error) {
             alert(error);
         }
@@ -40,8 +39,10 @@ export const TicketsPage = ({ disappearPanel }: TicketsPageProps) => {
                 <CrossIcon size={30} onClick={disappearPanel} />
             </div>
         </div>
-        {allTickets ? allTickets.map(({ name, price, totalSupply, sold, imgHash }) => (
-                <Ticket name={name} price={price} leftTickets={totalSupply - sold} imgHash={imgHash} />
-        )) : ""}
+        <div className="flex gap-2">
+            {allTickets ? allTickets.map(({ name, price, totalSupply, sold, imageURI }) => (
+                    <Ticket name={name} price={price} leftTickets={totalSupply - sold} imageURI={imageURI} />
+            )) : ""}
+        </div>
     </div>
 }

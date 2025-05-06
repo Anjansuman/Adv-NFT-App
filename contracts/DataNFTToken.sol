@@ -48,7 +48,7 @@ contract DataNFTToken is ERC721Enumerable, Ownable {
         Ticket storage ticket = Tickets[index];
 
         require(msg.value == ticket.price, "Pay correctly!");
-        require(ticket.sold <= ticket.totalSupply, "No Tickets Left!");
+        require(ticket.sold < ticket.totalSupply, "No Tickets Left!");
 
         tokenIdToTicketIndex[tokenId] = index;
         _safeMint(msg.sender, tokenId);
