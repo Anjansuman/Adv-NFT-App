@@ -95,7 +95,7 @@ export class Contract {
 
         try {
             
-            return await this.contract.purchaseTicket(name, { value: ethers.parseEther(eth) });
+            return await this.contract.purchaseTicket(name, { value: BigInt(eth) });
 
         } catch (error) {
             this.throwError(error);
@@ -107,9 +107,7 @@ export class Contract {
 
         try {
             
-            const txn = await this.contract.ticketsOfOwner(this.signer.address)
-            const receipt = await txn.wait();
-            return receipt;
+            return await this.contract.ticketsOfOwner(this.signer.address);
 
         } catch (error) {
             this.throwError(error);

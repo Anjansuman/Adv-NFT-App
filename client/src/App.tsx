@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { ContractAtom } from "./Atoms/ContractAtom";
 
 import { TicketsPage } from "./Components/TicketsPage";
+import { BoughtTickets } from "./Components/BoughtTickets";
 
 export default function App() {
   
@@ -14,6 +15,7 @@ export default function App() {
 
   const [createPanel, setCreatePanel] = useState<boolean>(false);
   const [ticketsPanel, setTicketsPanel] = useState<boolean>(false);
+  const [boughtTicketsPanel, setBoughtTicketsPanel] = useState<boolean>(false);
 
   const contract = useRecoilValue(ContractAtom);
   useContract();
@@ -60,11 +62,17 @@ export default function App() {
           >
             Purchase Tickets
           </div>
+          <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
+            onClick={() => setBoughtTicketsPanel(true)}
+          >
+            Bought Tickets
+          </div>
         </div>
       </div>
 
       {createPanel && <MintPage disappearPanel={() => setCreatePanel(false)} />}
       {ticketsPanel && <TicketsPage disappearPanel={() => setTicketsPanel(false)} />}
+      {boughtTicketsPanel && <BoughtTickets disappearPanel={() => setBoughtTicketsPanel(false)} />}
     </div>
   )
 }
