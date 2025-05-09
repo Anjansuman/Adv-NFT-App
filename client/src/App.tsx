@@ -1,78 +1,28 @@
-import { useState } from "react";
-import { MintPage } from "./Components/MintPage";
-import { Nav } from "./Components/Nav";
-
-import { useContract } from "./hooks/useContract";
+import { Home } from "./Components/Home";
+import { connectToMetaMask } from "./ContractUtils/connectToMetaMask";
 import { useRecoilValue } from "recoil";
 import { ContractAtom } from "./Atoms/ContractAtom";
 
-import { TicketsPage } from "./Components/TicketsPage";
-import { BoughtTickets } from "./Components/BoughtTickets";
 
 export default function App() {
-  
-  const [ownerPanel, setOwnerPanel] = useState<boolean>(false);
-
-  const [createPanel, setCreatePanel] = useState<boolean>(false);
-  const [ticketsPanel, setTicketsPanel] = useState<boolean>(false);
-  const [boughtTicketsPanel, setBoughtTicketsPanel] = useState<boolean>(false);
 
   const contract = useRecoilValue(ContractAtom);
-  useContract();
 
-  const connected = () => {
-
-    if(!contract || !contract.connectedWallet()) return false;
-
-    return contract.connectedWallet() == import.meta.env.VITE_CONTRACT_OWNER;
-  }
-
-  const withdraw = async () => {
-    if(!contract) return;
-
-    const receipt = await contract.withdraw();
-  }
-
-  return (
-      <div className="h-screen w-screen text-white ">
-        <div>
-        <Nav />
-        {ownerPanel && <div className="px-4 py-2 bg-gray-900 flex justify-start items-center gap-4">
-            <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
-              onClick={() => setCreatePanel(true)}
-            >
-              Create New Ticket
-            </div>
-            <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
-              onClick={withdraw}
-            >
-              Withdraw
-            </div>
-          </div>}
-        {connected() && <div className="flex justify-center cursor-pointer"
-          onClick={() => setOwnerPanel(t => !t)}
-        >
-          <div className="bg-gray-900 px-4 py-3 rounded-b-lg">
-            Owner controls
-          </div>
-        </div>}
-        <div className="px-4 py-2 bg-gray-900 flex justify-start items-center gap-4">
-          <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
-            onClick={() => setTicketsPanel(true)}
-          >
-            Purchase Tickets
-          </div>
-          <div className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer "
-            onClick={() => setBoughtTicketsPanel(true)}
-          >
-            Bought Tickets
-          </div>
+  return <div>
+    {
+    !contract && <div className="h-screen w-screen bg-black/85 absolute z-10">
+      <div className="h-96 w-96 bg-gray-600 rounded-xl relative left-1/2 top-1/2 -translate-1/2 text-white flex flex-col justify-center gap-3 items-center p-4 ">
+        <div className="text-xl font-semibold break-words text-center ">
+          Connect your MetaMask to access all features
         </div>
+        <button className="bg-blue-500 px-3 py-3 rounded-lg"
+          onClick={connectToMetaMask}
+        >
+          Connect Your Wallet
+        </button>
       </div>
-
-      {createPanel && <MintPage disappearPanel={() => setCreatePanel(false)} />}
-      {ticketsPanel && <TicketsPage disappearPanel={() => setTicketsPanel(false)} />}
-      {boughtTicketsPanel && <BoughtTickets disappearPanel={() => setBoughtTicketsPanel(false)} />}
     </div>
-  )
+    }
+    <Home />
+  </div>
 }

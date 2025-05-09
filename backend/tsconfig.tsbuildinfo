@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/routes/newticket.ts","./src/utils/pinataupload.ts"],"version":"5.8.3"}
+{"root":["./src/index.ts","./src/routes/NewTicket.ts","./src/utils/PinataUpload.ts"],"version":"5.8.3"}

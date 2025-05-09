@@ -11,8 +11,8 @@
     "verify": "node scripts/verifyDeployment.js",
     "test": "truffle test",
     "dev": "concurrently \"npm run start:client\"",
-    "postmigrate:client": "xcopy /s /y build\\contracts client\\src\\contracts\\",
-    "postmigrate:server": "xcopy /s /y build\\contracts backend\\src\\contracts\\"
+    "postmigrate:client": "cp -r build/contracts client/src/contracts/",
+    "postmigrate:server": "cp -r build/contracts backend/src/contracts/"
   },
   "keywords": [],
   "author": "",
