@@ -21,7 +21,14 @@ export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
         const receipt = await contract.purchaseTicket(name, price.toString());
     }
 
-    return <div className="h-90 w-70 border-2 border-[#202B44] mr-3 mt-3 rounded-2xl p-4 shadow-md transition-all duration-400 ease-in-out hover:-translate-y-1 hover:shadow-xl bg-[#162037] cursor-pointer "
+    return <div className="h-90 w-80 bg-[#111827] rounded-xl border border-gray-800 ">
+
+    </div>
+}
+
+/*
+
+<div className="h-90 w-70 border-2 border-[#202B44] mr-3 mt-3 rounded-2xl p-4 shadow-md transition-all duration-400 ease-in-out hover:-translate-y-1 hover:shadow-xl bg-[#162037] cursor-pointer "
         onClick={buy}
     >
         <div className="w-full h-[70%] rounded-2xl shadow-sm overflow-hidden bg-[#202B44] ">
@@ -40,4 +47,5 @@ export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
         }
     
 </div>
-}
+
+*/
