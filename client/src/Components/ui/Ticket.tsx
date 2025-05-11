@@ -1,10 +1,11 @@
 import { useRecoilValue } from "recoil"
 import { ContractAtom } from "../../Atoms/ContractAtom"
+import { TicketIcon } from "./SVGs/TicketIcon";
 
 interface TicketProps {
     name: String,
     price: number,
-    leftTickets?: number,
+    leftTickets: number,
     imageURI: string
 }
 
@@ -12,17 +13,42 @@ export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
 
     const contract = useRecoilValue(ContractAtom);
 
-    const buy = async () => {
+    const purchase = async () => {
         if(!contract) {
             alert("Metamask not connected!");
             throw new Error("MetaMask is not connected!");
         }
 
-        const receipt = await contract.purchaseTicket(name, price.toString());
+        const receipt = await contract.purchaseTicket(name, price);
     }
 
-    return <div className="h-90 w-80 bg-[#111827] rounded-xl border border-gray-800 ">
-
+    return <div className="h-90 w-80 bg-[#111827] rounded-xl border border-gray-800 overflow-hidden ">
+        <div className="h-36 w-full bg-gradient-to-r from-[#111827] to-[#2563eb] flex justify-center items-center overflow-hidden ">
+            {imageURI ? 
+                <img src={`https://ipfs.io/ipfs/${imageURI}`} alt="" /> :
+                <TicketIcon />
+            }
+        </div>
+        <div className="h-[216px] p-4 flex flex-col justify-between ">
+            <div>
+                <div className="text-xl font-semibold">
+                    {name}
+                </div>
+                <div className="text-gray-600">
+                    {leftTickets.toString() + " left"}
+                </div>
+            </div>
+            <div className="flex justify-between items-end ">
+                <div className="text-xl font-semibold text-[#2563eb] ">
+                    {price + " ETH"} 
+                </div>
+                <div className="bg-gray-800 px-3 py-2 rounded-lg border border-gray-700 hover:bg-gray-600 transition-colors cursor-pointer "
+                    onClick={purchase}
+                >
+                    Purchase
+                </div>
+            </div>
+        </div>
     </div>
 }
 

@@ -10,7 +10,7 @@ export const Nav = () => {
     const contract = useRecoilValue(ContractAtom);
     const [adminPanel, setAdminPanel] = useState<boolean>();
 
-    return <div className="h-20 flex justify-between items-center px-4 border-b border-gray-700 ">
+    return <div className="h-20 w-full flex justify-between items-center px-4 text-white bg-gray-900 border-b border-gray-700 ">
         <div className="flex justify-center items-center gap-5 ">
             <div className="text-lg font-semibold">
                 Decentralized Ticket Minting App

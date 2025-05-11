@@ -90,12 +90,12 @@ export class Contract {
         }
     }
 
-    public async purchaseTicket(name: String, eth: string) {
+    public async purchaseTicket(name: String, eth: number) {
         if(!this.contract) throw new Error("MetaMask not connected!");
 
         try {
-            
-            return await this.contract.purchaseTicket(name, { value: BigInt(eth) });
+            alert(typeof eth.toString());
+            return await this.contract.purchaseTicket(name.toString(), { value: ethers.parseUnits(eth.toString()) });
 
         } catch (error) {
             this.throwError(error);
