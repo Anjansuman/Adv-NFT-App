@@ -94,8 +94,10 @@ export class Contract {
         if(!this.contract) throw new Error("MetaMask not connected!");
 
         try {
-            alert(typeof eth.toString());
-            return await this.contract.purchaseTicket(name.toString(), { value: ethers.parseUnits(eth.toString()) });
+            const w18 = 1000000000000000000n;
+            const txn = await this.contract.purchaseTicket(name, { value: eth });
+            const receipt = await txn.wait();
+            return receipt;
 
         } catch (error) {
             this.throwError(error);

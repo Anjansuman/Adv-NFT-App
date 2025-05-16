@@ -11,15 +11,16 @@ interface TicketProps {
 
 export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
 
-    const contract = useRecoilValue(ContractAtom);
+    const c = useRecoilValue(ContractAtom);
 
     const purchase = async () => {
-        if(!contract) {
+        if(!c) {
             alert("Metamask not connected!");
             throw new Error("MetaMask is not connected!");
         }
 
-        const receipt = await contract.purchaseTicket(name, price);
+        const receipt = await c.purchaseTicket(name, price);
+        console.log(receipt);
     }
 
     return <div className="h-90 w-80 bg-[#111827] rounded-xl border border-gray-800 overflow-hidden ">

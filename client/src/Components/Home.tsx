@@ -13,8 +13,13 @@ interface Ticket {
 }
 
 export const Home = () => {
+
   const [tickets, setTickets] = useState<Ticket[] | null>(null);
   const [searchedTickets, setSearchedTickets] = useState<Ticket[] | null>(null);
+
+  const [ownedTickets, setOwnedTickets] = useState<Ticket[] | null>(null);
+  // this is for switching over All Tickets and My Tickets
+  const [switchTickets, setSwitchTickets] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const contract = useRecoilValue(ContractAtom);
@@ -31,19 +36,40 @@ export const Home = () => {
     setSearchedTickets(filtered);
   };
 
-  useEffect(() => {
-    if (!contract) {
-      alert("not connected!");
-      return;
-    }
+useEffect(() => {
+  if (!contract) {
+    alert("not connected!");
+    return;
+  }
 
-    const fetchTickets = async () => {
-      const t = await contract.getAllTickets();
-      setTickets(t);
-    };
+  const fetchTickets = async () => {
+    const rawTickets = await contract.getAllTickets();
+    const parsed = rawTickets.map((t: any) => ({
+      name: t.name,
+      price: t.price,
+      totalSupply: t.totalSupply,
+      sold: t.sold,
+      imageURI: t.imageURI,
+    }));
+    setTickets(parsed);
+  };
 
-    fetchTickets();
-  }, [ethers.JsonRpcSigner]);
+  const fetchOwnedTickets = async () => {
+    const raw = await contract.ticketsOfOwner();
+    const parsed = raw.map((t: any) => ({
+      name: t.name,
+      price: t.price,
+      totalSupply: t.totalSupply,
+      sold: t.sold,
+      imageURI: t.imageURI,
+    }));
+    setOwnedTickets(parsed);
+  };
+
+  fetchTickets();
+  fetchOwnedTickets();
+}, [contract]);
+
 
   const ticketsToShow = searchedTickets ?? tickets;
 
@@ -69,14 +95,15 @@ export const Home = () => {
 
           {/* Filter Tabs */}
           <div className="w-fit bg-gray-900 flex justify-start items-center px-1 py-1 rounded-lg border border-[#1e293b] gap-0.5">
-            <div className="hover:bg-gray-950 px-3 py-1.5 rounded-lg cursor-pointer">
+            <div className={`${!switchTickets ? "bg-gray-950" : ""} px-3 py-1.5 rounded-lg cursor-pointer`}
+                onClick={() => setSwitchTickets(false)}
+            >
               All Tickets
             </div>
-            <div className="hover:bg-gray-950 px-3 py-1.5 rounded-lg cursor-pointer">
-              Upcoming Tickets
-            </div>
-            <div className="hover:bg-gray-950 px-3 py-1.5 rounded-lg cursor-pointer">
-              Featured
+            <div className={`${switchTickets ? "bg-gray-950" : ""} px-3 py-1.5 rounded-lg cursor-pointer`}
+                onClick={() => setSwitchTickets(true)}
+            >
+              My Tickets
             </div>
           </div>
 
@@ -96,15 +123,26 @@ export const Home = () => {
 
           {/* Ticket Grid */}
           <div className="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 w-max mx-auto">
-            {ticketsToShow?.map(({ name, price, totalSupply, sold, imageURI }, index) => (
-              <Ticket
-                name={name}
-                price={price}
-                leftTickets={totalSupply - sold}
-                imageURI={imageURI}
-                key={index}
-              />
-            ))}
+            {
+                !switchTickets ? ticketsToShow?.map(({ name, price, totalSupply, sold, imageURI }, index) => (
+                    <Ticket
+                        name={name}
+                        price={price}
+                        leftTickets={totalSupply - sold}
+                        imageURI={imageURI}
+                        key={index}
+                    />
+                    )) : 
+                    ownedTickets?.map(({ name, price, totalSupply, sold, imageURI }, index) => (
+                    <Ticket
+                        name={name}
+                        price={price}
+                        leftTickets={totalSupply - sold}
+                        imageURI={imageURI}
+                        key={index}
+                    />
+                    ))
+            }
           </div>
         </div>
       </div>
