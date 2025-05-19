@@ -5,6 +5,7 @@ import FileAtom from "../Atoms/FileAtom";
 import axios from "axios";
 import { ContractAtom } from "../Atoms/ContractAtom";
 import { CrossIcon } from "./ui/SVGs/CrossIcon";
+import toast, { Toaster } from "react-hot-toast";
 
 
 interface MintPageProps {
@@ -24,7 +25,7 @@ export const MintPage = ({ disappearPanel }: MintPageProps) => {
         try {
 
             if(!contract) {
-                alert("Metamask not connected!");
+                toast.error("Metamask not connected!");
                 return;
             }
 
@@ -59,17 +60,13 @@ export const MintPage = ({ disappearPanel }: MintPageProps) => {
             });
 
             const data = await response.data;
-            alert(data.message);
+            toast(data.message);
 
             const hash = data.hash;
             
             const receipt = await contract.createTicket(_name, _price, _totalSupply, hash);
 
-            if(!receipt || receipt.status === 0) {
-                alert("Token creation failed!");
-            }
-
-            alert("tickets created");
+            !receipt || receipt === 0 ? toast.error("Tickets creation failed!") : toast.success("Tickets created successfully!");
 
         } catch (error) {
             alert(error)
@@ -77,6 +74,7 @@ export const MintPage = ({ disappearPanel }: MintPageProps) => {
     }
 
     return <div className="h-[80%] w-[80%] border border-white bg-gray-800 rounded-3xl absolute left-1/2 top-1/2 -translate-1/2 p-4">
+        <Toaster />
         <div className="text-4xl font-bold mb-14 flex justify-between items-center px-1 ">
             <div>
                 Create a New Ticket

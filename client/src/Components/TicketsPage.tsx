@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { ContractAtom } from "../Atoms/ContractAtom";
 import { Ticket } from "./ui/Ticket";
 import { CrossIcon } from "./ui/SVGs/CrossIcon";
+import toast, { Toaster } from "react-hot-toast";
 
 interface TicketsPageProps {
     disappearPanel: () => void
@@ -21,7 +22,7 @@ export const TicketsPage = ({ disappearPanel }: TicketsPageProps) => {
             const tickets = await contract.getAllTickets();
             setAllTickets(tickets);
         } catch (error) {
-            alert(error);
+            toast.error("Error fetching tickets!");
         }
       }
     
@@ -30,6 +31,7 @@ export const TicketsPage = ({ disappearPanel }: TicketsPageProps) => {
       }, [contract]);
 
     return <div className="h-[80%] w-[80%] border border-white bg-gray-800 rounded-3xl absolute left-1/2 top-1/2 -translate-1/2 p-4">
+        <Toaster />
         <div className="flex justify-between items-center ">
             <div className="text-2xl font-bold">
                 Purchase Tickets

@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { ContractAtom } from "../Atoms/ContractAtom";
 import { Ticket } from "./ui/Ticket";
 import { ethers } from "ethers";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Ticket {
   name: string;
@@ -38,7 +39,7 @@ export const Home = () => {
 
 useEffect(() => {
   if (!contract) {
-    alert("not connected!");
+    toast.error("Wallet not connected!")
     return;
   }
 
@@ -84,6 +85,7 @@ useEffect(() => {
         WebkitBackdropFilter: "blur(20px)",
       }}
     >
+      <Toaster />
       <div className="w-full flex justify-center">
         <div className="min-w-full max-w-100 flex flex-col gap-8 px-4 mt-10">
           <div className="flex flex-col gap-1">
