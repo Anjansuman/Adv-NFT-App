@@ -28,6 +28,22 @@ contract DataNFTToken is ERC721Enumerable, Ownable {
         Tickets.push(newTicket);
     }
 
+    function increaseSupply(string memory _name, uint256 _increaseSupply) public onlyOwner {
+        uint256 index = Tickets.length;
+
+        for(uint i = 0; i < Tickets.length; i++) {
+            if(keccak256(abi.encodePacked(Tickets[i].name)) == keccak256(abi.encodePacked(_name))) {
+                index = i;
+                break;
+            }
+        }
+
+        require(index < Tickets.length, "Ticket not found!");
+        Ticket storage ticket = Tickets[index];
+
+        ticket.totalSupply += _increaseSupply;
+    }
+
     function getAllTickets() public view returns(Ticket[] memory) {
         return Tickets;
     }

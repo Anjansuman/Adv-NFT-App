@@ -10,7 +10,6 @@ export default function App() {
 
   useContract();
   const contract = useRecoilValue(ContractAtom);
-  console.log(contract)
 
 return (
   <div className="w-screen flex flex-col items-center bg-[#0b1120] overflow-hidden ">

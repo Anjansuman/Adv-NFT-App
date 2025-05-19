@@ -67,9 +67,11 @@ export class Contract {
 
         try {
             
-            if(price < 1 || totalSupply < 1) throw new Error("Invalid data!");
+            if(price < 0 || totalSupply < 1) throw new Error("Invalid data!");
 
-            const txn = await this.contract.createTicket(name, price, totalSupply, imageURI);
+            const _price = ethers.parseEther(price.toString());
+
+            const txn = await this.contract.createTicket(name, _price, totalSupply, imageURI);
             const receipt = await txn.wait();
             return receipt;
 
@@ -94,7 +96,9 @@ export class Contract {
         if(!this.contract) throw new Error("MetaMask not connected!");
 
         try {
-            const w18 = 1000000000000000000n;
+            const w18 = 2000000000000000000n;
+            const parsed = BigInt(eth) * w18;
+
             const txn = await this.contract.purchaseTicket(name, { value: eth });
             const receipt = await txn.wait();
             return receipt;
@@ -138,6 +142,17 @@ export class Contract {
         if(!this.contract || !this.signer) throw new Error("MetaMask not connected!, from connecteWallet");
 
         return this.signer.address;
+    }
+
+    public disconnect() {
+        try {
+            
+            this.provider = null;
+            this.signer = null;
+
+        } catch (error) {
+            this.throwError(error);
+        }
     }
 
     private throwError(error: unknown) {

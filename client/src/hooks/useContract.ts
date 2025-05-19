@@ -20,6 +20,6 @@ export const useContract = () => {
       }
     };
 
-    initContract(); // Call the async function inside useEffect
+    initContract();
   }, [contractAtom, setContractAtom]);
 };

@@ -18,7 +18,6 @@ export const BoughtTickets = ({ disappearPanel }: BoughtTicketsProps) => {
         if(!contract) throw new Error("MetaMask not connected!");
         const tickets = async () => {
             const t = await contract.ticketsOfOwner();
-            console.log(t);
             setBoughtTickets(t);
         }
         tickets();

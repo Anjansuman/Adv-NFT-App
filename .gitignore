@@ -6,3 +6,4 @@
 /client/src/contracts
 /client2/contracts
 .env
+config.js

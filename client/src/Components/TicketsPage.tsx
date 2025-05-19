@@ -19,7 +19,6 @@ export const TicketsPage = ({ disappearPanel }: TicketsPageProps) => {
     
         try {
             const tickets = await contract.getAllTickets();
-            console.log(tickets);
             setAllTickets(tickets);
         } catch (error) {
             alert(error);

@@ -39,7 +39,7 @@ export const MintPage = ({ disappearPanel }: MintPageProps) => {
             }
 
             const _name = name.current.value;
-            const _price = parseInt(price.current.value);
+            const _price = parseFloat(price.current.value);
             const _totalSupply = parseInt(totalSupply.current.value);
 
             if(isNaN(_price) || isNaN(_totalSupply)) {
@@ -48,7 +48,6 @@ export const MintPage = ({ disappearPanel }: MintPageProps) => {
             }
             
             const backend = import.meta.env.VITE_BACKEND_URL;
-            console.log(backend);
 
             const formData = new FormData();
             formData.append('file', file);
@@ -101,7 +100,7 @@ export const MintPage = ({ disappearPanel }: MintPageProps) => {
                 </div>
                 <div>
                     <div className="text-lg font-semibold">
-                        Price (in Rs.):
+                        Price (in ETH):
                     </div>
                     <input type="number" className="bg-gray-900 h-10 w-80 rounded-lg border border-gray-700 px-2" 
                         ref={price}

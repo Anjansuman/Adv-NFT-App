@@ -1,17 +1,23 @@
 import { useRecoilValue } from "recoil"
 import { ContractAtom } from "../../Atoms/ContractAtom"
 import { TicketIcon } from "./SVGs/TicketIcon";
+import { ethers } from "ethers";
 
 interface TicketProps {
     name: String,
     price: number,
-    leftTickets: number,
+    leftTickets?: number,
     imageURI: string
 }
 
 export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
 
     const c = useRecoilValue(ContractAtom);
+
+    const calculatedPrice = () => {
+        const calPrice = ethers.formatEther(price.toString());
+        return calPrice;
+    }
 
     const purchase = async () => {
         if(!c) {
@@ -20,10 +26,9 @@ export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
         }
 
         const receipt = await c.purchaseTicket(name, price);
-        console.log(receipt);
     }
 
-    return <div className="h-90 w-80 bg-[#111827] rounded-xl border border-gray-800 overflow-hidden ">
+    return <div className="h-90 w-80 bg-[#111827] rounded-xl border border-gray-800  ">
         <div className="h-36 w-full bg-gradient-to-r from-[#111827] to-[#2563eb] flex justify-center items-center overflow-hidden ">
             {imageURI ? 
                 <img src={`https://ipfs.io/ipfs/${imageURI}`} alt="" /> :
@@ -36,12 +41,12 @@ export const Ticket = ({ name, price, leftTickets, imageURI }: TicketProps) => {
                     {name}
                 </div>
                 <div className="text-gray-600">
-                    {leftTickets.toString() + " left"}
+                    {leftTickets?.toString() + " left"}
                 </div>
             </div>
             <div className="flex justify-between items-end ">
-                <div className="text-xl font-semibold text-[#2563eb] ">
-                    {price + " ETH"} 
+                <div className="text-xl font-semibold text-[#2563eb] break-words ">
+                    {calculatedPrice() + " ETH"} 
                 </div>
                 <div className="bg-gray-800 px-3 py-2 rounded-lg border border-gray-700 hover:bg-gray-600 transition-colors cursor-pointer "
                     onClick={purchase}
