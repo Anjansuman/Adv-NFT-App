@@ -8,7 +8,6 @@ export class Contract {
     private contractAddress: string;
     private contractABI: ethers.InterfaceAbi;
 
-    private provider: ethers.BrowserProvider | null = null;
     private signer: ethers.JsonRpcSigner | null = null;
     private contract: ethers.Contract | null = null;
 
@@ -30,12 +29,10 @@ export class Contract {
     private async connectToMetaMask() {
         try {
             
-            const { provider, signer }: {
-                provider: ethers.BrowserProvider,
+            const { signer }: {
                 signer: ethers.JsonRpcSigner
             } = await connectToMetaMask();
 
-            this.provider = provider;
             this.signer = signer;
 
             this.setContract();
@@ -96,8 +93,6 @@ export class Contract {
         if(!this.contract) throw new Error("MetaMask not connected!");
 
         try {
-            const w18 = 2000000000000000000n;
-            const parsed = BigInt(eth) * w18;
 
             const txn = await this.contract.purchaseTicket(name, { value: eth });
             const receipt = await txn.wait();
@@ -147,7 +142,6 @@ export class Contract {
     public disconnect() {
         try {
             
-            this.provider = null;
             this.signer = null;
 
         } catch (error) {

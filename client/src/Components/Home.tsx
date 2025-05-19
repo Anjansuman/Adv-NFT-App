@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { ContractAtom } from "../Atoms/ContractAtom";
 import { Ticket } from "./ui/Ticket";
-import { ethers } from "ethers";
 import toast, { Toaster } from "react-hot-toast";
 
 interface Ticket {

@@ -27,15 +27,6 @@ export const ImageAdd = () => {
         }
     };
 
-    const handleRemoveImage = () => {
-        setFile(null);
-        setPreviewUrl(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    };
-
-
     return (
         <div className="space-y-4 max-w-md mx-auto">
             {/* File input with preview */}
