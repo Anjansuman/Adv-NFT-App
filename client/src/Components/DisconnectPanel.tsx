@@ -25,15 +25,15 @@ export const DisconnectPanel = () => {
           >
             Connect MetaMask
           </button>
-          <div className="flex">
-              <div>
+          <div className="flex items-center justify-center gap-x-3">
+            <div>
               Don't have a wallet
             </div>
             <button
               onClick={connectToMetaMask}
-              className="bg-blue-600 hover:bg-blue-700 transition-colors px-5 py-3 rounded-lg text-white font-semibold cursor-pointer"
+              className="border-2 border-blue-600 hover:bg-gray-800 transition-colors px-5 py-3 rounded-lg text-white font-semibold cursor-pointer"
             >
-              Connect MetaMask
+              <a target="_blank" href="https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"  >Get one.</a>
             </button>
           </div>
         </div>
