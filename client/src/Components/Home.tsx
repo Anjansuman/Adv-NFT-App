@@ -26,14 +26,23 @@ export const Home = () => {
 
   const searchChange = () => {
     const curr = searchRef.current?.value.trim().toLowerCase();
-    if (!curr || !tickets) {
-      setSearchedTickets(null);
-      return;
+    if(switchTickets) {
+      if (!curr || !tickets) {
+        setSearchedTickets(null);
+        return;
+      }
+      const filtered = tickets.filter((t) =>
+        t.name.toLowerCase().includes(curr)
+      );
+      setSearchedTickets(filtered);
+    } else {
+      if(!curr || !ownedTickets) {
+        setSearchedTickets(null);
+        return;
+      }
+      const filtered = ownedTickets.filter((t) => t.name.toLowerCase().includes(curr));
+      setSearchedTickets(filtered);
     }
-    const filtered = tickets.filter((t) =>
-      t.name.toLowerCase().includes(curr)
-    );
-    setSearchedTickets(filtered);
   };
 
 useEffect(() => {
@@ -71,7 +80,7 @@ useEffect(() => {
 }, [contract]);
 
 
-  const ticketsToShow = searchedTickets ?? tickets;
+  const ticketsToShow = searchedTickets ?? (switchTickets ? ownedTickets : tickets);
 
   return (
     <div
@@ -132,9 +141,10 @@ useEffect(() => {
                         leftTickets={totalSupply - sold}
                         imageURI={imageURI}
                         key={index}
+                        boughtOne
                     />
                     )) : 
-                    ownedTickets?.map(({ name, price, totalSupply, sold, imageURI }, index) => (
+                    ticketsToShow?.map(({ name, price, totalSupply, sold, imageURI }, index) => (
                     <Ticket
                         name={name}
                         price={price}
